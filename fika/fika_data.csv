@@ -1,0 +1,10 @@
+id,product,task,action_owner,status,start,end,c_percent
+1,Sesame Bagel,Toast buns,Dali,In Progress,2023-02-01 00:00:00,2023-02-10,0.7
+2,Americano,Fill coffee beans,Dali,In Progress,2023-02-02 00:00:00,2023-02-14,0.5
+3,Chicken Salad,Purchase arugula,Patrick,In Progress,2023-02-05 00:00:00,2023-02-15,0.5
+4,Americano,Take order,Ian,Backlog,2023-02-07 00:00:00,2023-02-15,0.0
+5,Chicken Salad,Take order,Dali,Done,2023-02-07 00:00:00,2023-02-18,1.0
+6,Sesame Bagel,Knead dough,Ian,To Do,2023-02-10 00:00:00,2023-02-20,0.0
+7,Chicken Salad,Roast chicken,Patrick,To Do,2023-02-14 00:00:00,2023-02-28,0.0
+8,Potato,Frying Potatoes,Dali,In Progress,2023-02-07 00:00:00,2023-02-07,0.2
+9,Potato,Buy more potatoes,Ian,Done,2023-02-07,2023-02-07,1.0
