@@ -11,7 +11,7 @@ from matplotlib.patches import Patch
 # Initialisation ----------------------------------------------------------------------
 
 st.set_page_config(page_title="Fika", page_icon="👌",layout="wide")
-df = pd.read_csv("fika_data.csv", parse_dates=[4,5])
+df = pd.read_csv("fika/fika_data.csv", parse_dates=[4,5])
 
 # Sidebar ------------------------------------------------------------------------------
 with st.sidebar:
@@ -24,7 +24,7 @@ with st.sidebar:
 if selected_mode == 'Kanban':
     st.title("Kanban")
 
-    df = pd.read_csv("fika_data.csv")
+    df = pd.read_csv("fika/fika_data.csv")
     # ref: https://discuss.streamlit.io/t/is-it-possible-to-convert-dataframe-records-into-bootstrap-card/20134/4
     # ref: https://getbootstrap.com/docs/5.0/components/card/#horizontal
 
@@ -45,7 +45,7 @@ if selected_mode == 'Kanban':
 
     with tab1:
         col1, col2, col3, col4 = st.columns(4)
-        df = pd.read_csv("fika_data.csv") 
+        df = pd.read_csv("fika/fika_data.csv") 
 
         with col1:
             st.subheader("Backlog")
@@ -81,13 +81,13 @@ if selected_mode == 'Kanban':
             
     with tab2:
         st.subheader("Task Overview")
-        df = pd.read_csv("fika_data.csv") 
+        df = pd.read_csv("fika/fika_data.csv") 
         st.write(df)
 
     with tab3: # add task    
         cnt = 0
         st.subheader("Add Task")
-        df = pd.read_csv("fika_data.csv") 
+        df = pd.read_csv("fika/fika_data.csv") 
 
         form = st.form(key='form1', clear_on_submit=True)
 
@@ -109,13 +109,13 @@ if selected_mode == 'Kanban':
             'status':inp_4, 'start':inp_5, 'end':inp_6, 'c_percent':inp_7, 'remarks':inp_8}
             
             df = pd.concat([df, pd.DataFrame([new_df])], ignore_index=True)
-            df.to_csv("fika_data.csv", index=False)
+            df.to_csv("fika/fika_data.csv", index=False)
             st.success('Added!')
 
     with tab4: # update task
         cnt = 10
         st.subheader("Edit Task")
-        df = pd.read_csv("fika_data.csv") 
+        df = pd.read_csv("fika/fika_data.csv") 
 
         inp_0 = st.number_input(label= "Populate data with Task ID", min_value=1, max_value=df.tail(1)['id'].tolist()[0], key=cnt-1, 
         help='If an error is shown, the ID entered does not exist.')
@@ -145,7 +145,7 @@ if selected_mode == 'Kanban':
             df.sort_values(by=['id'], ascending = True, inplace = True)
             df.reset_index(drop=True, inplace=True)
 
-            df.to_csv("fika_data.csv", index=False)
+            df.to_csv("fika/fika_data.csv", index=False)
             st.success('Updated!')
         
         if delete_btn:
@@ -153,7 +153,7 @@ if selected_mode == 'Kanban':
             df.sort_values(by=['id'], ascending = True, inplace = True)
             df.reset_index(drop=True, inplace=True)
 
-            df.to_csv("fika_data.csv", index=False)
+            df.to_csv("fika/fika_data.csv", index=False)
             st.success('Deleted!')
 
 # Section two: Timeline View ------------------------------------------------------------
@@ -162,7 +162,7 @@ if selected_mode == 'Kanban':
 elif selected_mode == 'Roadmap':
     st.title("Roadmap")
 
-    df = pd.read_csv("fika_data.csv")
+    df = pd.read_csv("fika/fika_data.csv")
 
     df[['start', 'end']] = df[['start', 'end']].apply(pd.to_datetime)
     df.sort_values(by=['start'], ascending = False, inplace = True)
