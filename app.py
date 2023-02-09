@@ -9,7 +9,7 @@ from datetime import date
 from matplotlib.patches import Patch
 
 # Initialisation ----------------------------------------------------------------------
-st.set_page_config(page_title="Fika", page_icon="👌",layout="wide")
+st.set_page_config(page_title="Fika", page_icon="☕",layout="wide")
 df = pd.read_csv("fika_data.csv", parse_dates=[4,5])
 
 # Sidebar ------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ if selected_mode == 'Kanban':
 
         
         inp_0 = st.number_input(label= "Populate data with Task ID", min_value=1, max_value=df.tail(1)['id'].tolist()[0], key=cnt-1, 
-            help='If an error is shown, the ID entered does not exist.')
+        help='If an error is shown, the ID entered does not exist.')
 
         with st.form(key='form2', clear_on_submit=True):
             c3, c4 = st.columns(2)
@@ -175,17 +175,17 @@ elif selected_mode == 'Roadmap':
     df.sort_values(by=['start'], ascending = False, inplace = True)
     df.reset_index(drop=True, inplace=True)
         
-    proj_start = df.start.min() # project start date
-    df['start_num'] = (df.start-proj_start).dt.days # number of days from project start to task start
-    df['end_num'] = (df.end-proj_start).dt.days # number of days from project start to end of tasks
-    df['days_start_to_end'] = df.end_num - df.start_num # days between start and end of each task
-    df['current_num'] = (df.days_start_to_end * df.c_percent)
+    proj_start = df.start.min() # project starts
+    df['start_num'] = (df.start-proj_start).dt.days # from project start to start task
+    df['end_num'] = (df.end-proj_start).dt.days # from project start to end task
+    df['days_between'] = df.end_num - df.start_num # btwn start & end task
+    df['curr_num'] = (df.days_between * df.c_percent)
 
     fig, ax = plt.subplots(1, figsize=(20,10))
 
     # bars
-    ax.barh(df.task, df.current_num, left=df.start_num, color='green')
-    ax.barh(df.task, df.days_start_to_end, left=df.start_num, alpha=0.8, color='red')
+    ax.barh(df.task, df.curr_num, left=df.start_num, color='green')
+    ax.barh(df.task, df.days_between, left=df.start_num, alpha=0.8, color='red')
 
     # texts
     for idx, row in df.iterrows():
