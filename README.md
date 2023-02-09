@@ -1,5 +1,5 @@
 # Fika
-> App Available @ [link](https://ackw-fika.streamlit.app/)<br>
+> Available @ [link](https://ackw-fika.streamlit.app/)<br>
 
 
 ### Run locally:
