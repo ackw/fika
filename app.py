@@ -14,7 +14,6 @@ df = pd.read_csv("fika_data.csv", parse_dates=[4,5])
 
 # Sidebar ------------------------------------------------------------------------------
 with st.sidebar:
-    st.subheader("Choose one")
     sections = ['Kanban', 'Roadmap']
     selected_mode = st.selectbox("View Mode", sections)
 
