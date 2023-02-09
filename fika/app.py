@@ -9,22 +9,20 @@ from datetime import date
 from matplotlib.patches import Patch
 
 # Initialisation ----------------------------------------------------------------------
-
 st.set_page_config(page_title="Fika", page_icon="👌",layout="wide")
-df = pd.read_csv("fika/fika_data.csv", parse_dates=[4,5])
+df = pd.read_csv("fika_data.csv", parse_dates=[4,5])
 
 # Sidebar ------------------------------------------------------------------------------
 with st.sidebar:
-    st.subheader("Choose a Feature")
+    st.subheader("Choose one")
     sections = ['Kanban', 'Roadmap']
     selected_mode = st.selectbox("View Mode", sections)
 
 # Section one: Kanban View --------------------------------------------------------------
-
 if selected_mode == 'Kanban':
     st.title("Kanban")
 
-    df = pd.read_csv("fika/fika_data.csv")
+    df = pd.read_csv("fika_data.csv")
     # ref: https://discuss.streamlit.io/t/is-it-possible-to-convert-dataframe-records-into-bootstrap-card/20134/4
     # ref: https://getbootstrap.com/docs/5.0/components/card/#horizontal
 
@@ -45,7 +43,7 @@ if selected_mode == 'Kanban':
 
     with tab1:
         col1, col2, col3, col4 = st.columns(4)
-        df = pd.read_csv("fika/fika_data.csv") 
+        df = pd.read_csv("fika_data.csv") 
 
         with col1:
             st.subheader("Backlog")
@@ -53,7 +51,8 @@ if selected_mode == 'Kanban':
             
             for index, row in df1.iterrows():
                 if row['status'] == 'Backlog': temp_color = 'text-white bg-secondary'
-                st.markdown(card_template.format(temp_color, str(index + 1), row['product'], row['task'], row['remarks'], row['action_owner'], int(row['c_percent'])*100), unsafe_allow_html=True)
+                row['c_percent'] = int(row['c_percent']*100)
+                st.markdown(card_template.format(temp_color, str(index + 1), row['product'], row['task'], row['remarks'], row['action_owner'], row['c_percent']), unsafe_allow_html=True)
 
         with col2:
             st.subheader("To-Do")
@@ -81,88 +80,96 @@ if selected_mode == 'Kanban':
             
     with tab2:
         st.subheader("Task Overview")
-        df = pd.read_csv("fika/fika_data.csv") 
+        df = pd.read_csv("fika_data.csv") 
         st.write(df)
 
     with tab3: # add task    
         cnt = 0
         st.subheader("Add Task")
-        df = pd.read_csv("fika/fika_data.csv") 
+        df = pd.read_csv("fika_data.csv") 
 
-        form = st.form(key='form1', clear_on_submit=True)
+        with st.form(key='form1', clear_on_submit=True):
+            c1, c2 = st.columns(2)
+            inp_0 = (df.tail(1).index).start + 2 # append task id based on index
 
-        inp_0 = (df.tail(1).index).start + 2 # append task id based on index
-        inp_1 = form.text_input(label= "Product", key=cnt)
-        inp_2 = form.text_input(label= "Task", key=cnt+1)
-        inp_3 = form.text_input(label= "Action owner", key=cnt+2)
-        inp_4 = form.selectbox('Status',('Backlog', 'To Do', 'In Progress', 'Done'), key=cnt+3)
-        inp_5 = form.date_input(label= "Start Date", key=cnt+4)
-        inp_6 = form.date_input(label= "End Date", key=cnt+5)
-        inp_7 = form.number_input(label= "Completion %", min_value=0, max_value=100, step=10, key=cnt+6) # Add number picker
-        inp_7 = inp_7/100
-        inp_8 = form.text_input(label= "Remarks", key=cnt+7)
+            with c1:
+                inp_1 = st.text_input(label= "Product", key=cnt)
+                inp_3 = st.text_input(label= "Action owner", key=cnt+2)
+                inp_5 = st.date_input(label= "Start Date", key=cnt+4)
+                inp_7 = st.number_input(label= "Completion %", min_value=0, max_value=100, step=10, key=cnt+6) # Add number picker
+                inp_7 = inp_7/100
 
-        submit_btn = form.form_submit_button(label='Add Task')
+            with c2:
+                inp_2 = st.text_input(label= "Task", key=cnt+1)
+                inp_4 = st.selectbox('Status',('Backlog', 'To Do', 'In Progress', 'Done'), key=cnt+3)
+                inp_6 = st.date_input(label= "End Date", key=cnt+5)
+                inp_8 = st.text_input(label= "Remarks", key=cnt+7)
+
+            submit_btn = st.form_submit_button(label='Add Task')
 
         if submit_btn:
             new_df = {'id':inp_0, 'product':inp_1, 'task':inp_2, 'action_owner':inp_3,
             'status':inp_4, 'start':inp_5, 'end':inp_6, 'c_percent':inp_7, 'remarks':inp_8}
             
             df = pd.concat([df, pd.DataFrame([new_df])], ignore_index=True)
-            df.to_csv("fika/fika_data.csv", index=False)
+            df.to_csv("fika_data.csv", index=False)
             st.success('Added!')
 
     with tab4: # update task
         cnt = 10
         st.subheader("Edit Task")
-        df = pd.read_csv("fika/fika_data.csv") 
+        df = pd.read_csv("fika_data.csv") 
 
-        inp_0 = st.number_input(label= "Populate data with Task ID", min_value=1, max_value=df.tail(1)['id'].tolist()[0], key=cnt-1, 
-        help='If an error is shown, the ID entered does not exist.')
-
-        form = st.form(key='form2', clear_on_submit=True)
-
-        inp_1 = form.text_input(label= "Product", value = df['product'][df['id'] == inp_0].values[0], key=cnt)
-        inp_2 = form.text_input(label= "Task", value = df['task'][df['id'] == inp_0].values[0], key=cnt+1)
-        inp_3 = form.text_input(label= "Action owner", value = df['action_owner'][df['id'] == inp_0].values[0], key=cnt+2)
-        inp_4 = form.selectbox('Status',('Backlog', 'To Do', 'In Progress', 'Done'), key=cnt+3) # fix this status select box
-        inp_5 = form.date_input(label= "Start Date", key=cnt+4) # fix this, need to reformat date
-        inp_6 = form.date_input(label= "End Date", key=cnt+5)
-        inp_7 = form.number_input(label= "Completion %", min_value=0, max_value=100, step=10, key=cnt+6) # Add number picker
-        inp_7 = inp_7/100
-        inp_8 = form.text_input(label= "Remarks", value = df['remarks'][df['id'] == inp_0].values[0], key=cnt+7)
-
-        update_btn = form.form_submit_button(label='Update Task')
-        delete_btn = form.form_submit_button(label='Delete Task')
-
-        if update_btn:
-            df = df.drop(labels=df.index[df['id']==inp_0].tolist()[0], axis=0)
-
-            new_df = {'id':inp_0, 'product':inp_1, 'task':inp_2, 'action_owner':inp_3,
-            'status':inp_4, 'start':inp_5, 'end':inp_6, 'c_percent':inp_7, 'remarks':inp_8}
-            
-            df = pd.concat([df, pd.DataFrame([new_df])], ignore_index=True)
-            df.sort_values(by=['id'], ascending = True, inplace = True)
-            df.reset_index(drop=True, inplace=True)
-
-            df.to_csv("fika/fika_data.csv", index=False)
-            st.success('Updated!')
         
-        if delete_btn:
-            df = df.drop(labels=df.index[df['id']==inp_0].tolist()[0], axis=0)
-            df.sort_values(by=['id'], ascending = True, inplace = True)
-            df.reset_index(drop=True, inplace=True)
+        inp_0 = st.number_input(label= "Populate data with Task ID", min_value=1, max_value=df.tail(1)['id'].tolist()[0], key=cnt-1, 
+            help='If an error is shown, the ID entered does not exist.')
 
-            df.to_csv("fika/fika_data.csv", index=False)
-            st.success('Deleted!')
+        with st.form(key='form2', clear_on_submit=True):
+            c3, c4 = st.columns(2)
 
-# Section two: Timeline View ------------------------------------------------------------
+            with c3:
+                inp_1 = st.text_input(label= "Product", value = df['product'][df['id'] == inp_0].values[0], key=cnt)
+                inp_3 = st.text_input(label= "Action owner", value = df['action_owner'][df['id'] == inp_0].values[0], key=cnt+2)
+                inp_5 = st.date_input(label= "Start Date", key=cnt+4) # fix this, need to reformat date
+                inp_7 = st.number_input(label= "Completion %", min_value=0, max_value=100, step=10, key=cnt+6) # Add number picker
+                inp_7 = inp_7/100
+                update_btn = st.form_submit_button(label='Update Task')
+
+            with c4:
+                inp_2 = st.text_input(label= "Task", value = df['task'][df['id'] == inp_0].values[0], key=cnt+1)
+                inp_4 = st.selectbox('Status',('Backlog', 'To Do', 'In Progress', 'Done'), key=cnt+3) # fix this status select box
+                inp_6 = st.date_input(label= "End Date", key=cnt+5)
+                inp_8 = st.text_input(label= "Remarks", value = df['remarks'][df['id'] == inp_0].values[0], key=cnt+7)
+                delete_btn = st.form_submit_button(label='Delete Task')
+
+            if update_btn:
+                df = df.drop(labels=df.index[df['id']==inp_0].tolist()[0], axis=0)
+
+                new_df = {'id':inp_0, 'product':inp_1, 'task':inp_2, 'action_owner':inp_3,
+                'status':inp_4, 'start':inp_5, 'end':inp_6, 'c_percent':inp_7, 'remarks':inp_8}
+                
+                df = pd.concat([df, pd.DataFrame([new_df])], ignore_index=True)
+                df.sort_values(by=['id'], ascending = True, inplace = True)
+                df.reset_index(drop=True, inplace=True)
+
+                df.to_csv("fika_data.csv", index=False)
+                st.success('Updated!')
+            
+            if delete_btn:
+                df = df.drop(labels=df.index[df['id']==inp_0].tolist()[0], axis=0)
+                df.sort_values(by=['id'], ascending = True, inplace = True)
+                df.reset_index(drop=True, inplace=True)
+
+                df.to_csv("fika_data.csv", index=False)
+                st.success('Deleted!')
+
+# Section two: Roadmap View ------------------------------------------------------------
 # ref: https://towardsdatascience.com/gantt-charts-with-pythons-matplotlib-395b7af72d72
 
 elif selected_mode == 'Roadmap':
     st.title("Roadmap")
 
-    df = pd.read_csv("fika/fika_data.csv")
+    df = pd.read_csv("fika_data.csv")
 
     df[['start', 'end']] = df[['start', 'end']].apply(pd.to_datetime)
     df.sort_values(by=['start'], ascending = False, inplace = True)
@@ -210,7 +217,3 @@ elif selected_mode == 'Roadmap':
     ax.text(today.days, len(df)+0.5, 'Today', ha='center', color='blue')
 
     st.pyplot(fig)
-
-# FOR FUTURE IMPLEMENTATION -------------------------------------
-# Selection Dropdown - To choose product type
-# Drag and drop to change product status
