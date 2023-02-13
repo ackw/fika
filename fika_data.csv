@@ -1,4 +1,4 @@
-id,task,category,action_owner,status,start,end,c_percent,priority,remarks
+id,product,task,action_owner,status,start,end,c_percent,remarks
 1,Sesame Bagel,Toast buns,Dali,In Progress,2023-02-01,2023-02-10,0.7,no remarks
 2,Americano,Fill coffee beans,Dali,In Progress,2023-02-02,2023-02-14,0.5,no remarks
 3,Chicken Salad,Purchase arugula from mart,Patrick,Done,2023-02-09,2023-02-22,1.0,no remarks
