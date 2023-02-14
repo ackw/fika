@@ -69,8 +69,8 @@ if selected_mode == 'Kanban':
                 elif row['priority'] == 'Medium': temp_prio = '❗'
                 else: temp_prio = ''
 
-                if row['category'] == 'Food': temp_cat = '🍕'
-                elif row['category'] == 'Drink': temp_cat = '🍺'
+                if row['category'] == 'Food': temp_cat = '🍩'
+                elif row['category'] == 'Drink': temp_cat = '☕'
                 else: temp_cat = '📦'
                 
                 st.markdown(card_temp.format(temp_color, temp_prio, row['task'], str(index + 1), row['action_owner'], 
@@ -100,8 +100,8 @@ if selected_mode == 'Kanban':
                 elif row['priority'] == 'Medium': temp_prio = '❕'
                 else: temp_prio = ''
 
-                if row['category'] == 'Food': temp_cat = '🍕'
-                elif row['category'] == 'Drink': temp_cat = '🍺'
+                if row['category'] == 'Food': temp_cat = '🍩'
+                elif row['category'] == 'Drink': temp_cat = '☕'
                 else: temp_cat = '📦'
                 
                 st.markdown(card_temp.format(temp_color, temp_prio, row['task'], str(index + 1), row['action_owner'], 
@@ -130,8 +130,8 @@ if selected_mode == 'Kanban':
                 elif row['priority'] == 'Medium': temp_prio = '❗'
                 else: temp_prio = ''
 
-                if row['category'] == 'Food': temp_cat = '🍕'
-                elif row['category'] == 'Drink': temp_cat = '🍺'
+                if row['category'] == 'Food': temp_cat = '🍩'
+                elif row['category'] == 'Drink': temp_cat = '☕'
                 else: temp_cat = '📦'
 
                 st.markdown(card_temp.format(temp_color, temp_prio, row['task'], str(index + 1), row['action_owner'], 
@@ -160,8 +160,8 @@ if selected_mode == 'Kanban':
                 elif row['priority'] == 'Medium': temp_prio = '❗'
                 else: temp_prio = ''
 
-                if row['category'] == 'Food': temp_cat = '🍕'
-                elif row['category'] == 'Drink': temp_cat = '🍺'
+                if row['category'] == 'Food': temp_cat = '🍩'
+                elif row['category'] == 'Drink': temp_cat = '☕'
                 else: temp_cat = '📦'
 
                 st.markdown(card_temp.format(temp_color, temp_prio, row['task'], str(index + 1), row['action_owner'], 

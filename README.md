@@ -6,6 +6,7 @@
 * Roadmap
 * Add, update & delete tasks
 * Populate data with ID
+* Priority flags
 
 ### Run locally:
 `pip install -r requirements.txt`
