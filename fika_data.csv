@@ -1,10 +1,10 @@
-id,product,task,action_owner,status,start,end,c_percent,remarks
-1,Sesame Bagel,Toast buns,Dali,In Progress,2023-02-01,2023-02-10,0.7,no remarks
-2,Americano,Fill coffee beans,Dali,In Progress,2023-02-02,2023-02-14,0.5,no remarks
-3,Chicken Salad,Purchase arugula from mart,Patrick,Done,2023-02-09,2023-02-22,1.0,no remarks
-4,Americano,Take order,Ian,Backlog,2023-02-07,2023-02-15,0.0,no remarks
-5,Chicken Salad,Take more orders,Dali,Done,2023-02-07,2023-02-18,1.0,no remarks
-6,Sesame Bagel,Knead dough,Ian,To Do,2023-02-10,2023-02-20,0.0, no remarks
-7,Chicken Salad,Roast chicken,Patrick,To Do,2023-02-14,2023-02-28,0.0,no remarks
-8,Potato,Frying Potatoes,Dali,In Progress,2023-02-14,2023-02-28,0.2,no remarks
-9,Potato,Bake potatoes,Ian,Backlog,2023-02-17,2023-02-22,0.0,no remarks
+id,task,category,action_owner,status,start,end,c_percent,priority,remarks
+1,Toast sesame bagels,Food,Dali,In Progress,2023-02-01,2023-02-10,70.0,High,no remarks
+2,Brew americano,Drink,Dali,In Progress,2023-02-02,2023-02-14,50.0,Highest,no remarks
+3,Fill coffee beans,Drink,Dali,In Progress,2023-02-02,2023-02-14,50.0,Low,no remarks
+4,Take order for americano,Drink,Ian,Backlog,2023-02-07,2023-02-15,0.0,High,no remarks
+5,Rinse arugula,Food,Dali,Done,2023-02-07,2023-02-18,100.0,Medium,no remarks
+6,Knead bagel dough,Food,Ian,To Do,2023-02-10,2023-02-20,0.0,Low,no remarks
+7,Roast chicken,Food,Patrick,To Do,2023-02-14,2023-02-28,0.0,High,no remarks
+8,Frying Potatoes,Food,Dali,In Progress,2023-02-14,2023-02-28,20.0,Low,no remarks
+9,Bake potatoes,Food,Ian,Backlog,2023-02-17,2023-02-22,0.0,Highest,no remarks
