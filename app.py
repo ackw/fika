@@ -51,7 +51,6 @@ if selected_mode == 'Kanban':
             df1['priority'] = df1['priority'].astype(CategoricalDtype(['Highest', 'High', 'Medium', 'Low'],ordered=True))
             df1.sort_values(by='priority', ascending=True, inplace=True)
 
-            
             for index, row in df1.iterrows():
                 if row['status'] == 'Backlog': temp_color = 'text-white bg-secondary'
                 temp_remarks = ''
@@ -82,7 +81,6 @@ if selected_mode == 'Kanban':
             df2['priority'] = df2['priority'].astype(CategoricalDtype(['Highest', 'High', 'Medium', 'Low'],ordered=True))
             df2.sort_values(by='priority', ascending=True, inplace=True)
 
-            
             for index, row in df2.iterrows():
                 if row['status'] == 'To Do': temp_color = 'text-white bg-danger'
                 temp_remarks = ''
@@ -277,10 +275,12 @@ elif selected_mode == 'Roadmap':
         ax.text(row.start_num-0.1, idx, row.task, va='center', ha='right', alpha=0.8)
 
     # ticks & spines
-    xticks = np.arange(0, df.end_num.max()+1, 14)
+    xticks = np.arange(0, df.end_num.max()+1, 3)
     xticks_labels = pd.date_range(proj_start, end=df.end.max()).strftime("%d/%m")
+    xticks_minor = np.arange(0, df.end_num.max()+1, 1)
     ax.set_xticks(xticks)
-    ax.set_xticklabels(xticks_labels[::14])
+    ax.set_xticks(xticks_minor, minor=True)
+    ax.set_xticklabels(xticks_labels[::3])
     
     ax.yaxis.set_ticklabels([])
     ax.tick_params(axis='y', which='both', left=False)
