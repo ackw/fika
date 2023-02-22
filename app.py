@@ -189,6 +189,10 @@ if selected_mode == 'Kanban':
                 inp_6 = st.number_input(label= "Completion %", min_value=0, max_value=100, step=5, key=cnt+6)
                 inp_8 = st.date_input(label= "End Date", key=cnt+8)
                             
+        if inp_1 is None or inp_1 == '': inp_1='undefined'
+        if inp_2 is None or inp_2 == '': inp_2='undefined'
+        if inp_9 is None or inp_9 == '': inp_9='no remarks'
+
         if submit_btn:
             new_df = {'id':inp_0, 'task':inp_1, 'category':inp_5, 'action_owner':inp_2,
             'status':inp_3, 'start':inp_7, 'end':inp_8, 'c_percent':int(inp_6), 'priority':inp_4, 'remarks':inp_9}
@@ -225,6 +229,10 @@ if selected_mode == 'Kanban':
                 inp_6 = st.number_input(label= "Completion %", min_value=0, max_value=100, value = int(df['c_percent'][df['id'] == inp_0].values[0]), step=5, key=cnt+6)
                 inp_8 = st.date_input(label= "End Date", value=datetime.date(int(df['end'][df['id'] == inp_0].values[0].split('-')[0]),
                 int(df['end'][df['id'] == inp_0].values[0].split('-')[1]),int(df['end'][df['id'] == inp_0].values[0].split('-')[2])), key=cnt+8)
+
+            if inp_1 is None or inp_1 == '': inp_1='undefined'
+            if inp_2 is None or inp_2 == '': inp_2='undefined'
+            if inp_9 is None or inp_9 == '': inp_9='no remarks'
 
             if update_btn:
                 df = df.drop(labels=df.index[df['id']==inp_0].tolist()[0], axis=0)
@@ -263,11 +271,17 @@ elif selected_mode == 'Roadmap':
     df['days_between'] = df.end_num - df.start_num # btwn start & end task
     df['curr_num'] = (df.days_between * ((df.c_percent)/100))
 
+    def color(row):
+       c_dict = {'Backlog':'#808080', 'To Do':'#E64646', 'In Progress':'#ffcc00', 'Done':'#34D05C'}
+       return c_dict[row['status']]
+
+    df['color'] = df.apply(color, axis=1)
+
     fig, ax = plt.subplots(1, figsize=(20,10))
 
     # bars
-    ax.barh(df.task, df.curr_num, left=df.start_num, color='green')
-    ax.barh(df.task, df.days_between, left=df.start_num, alpha=0.8, color='red')
+    ax.barh(df.task, df.curr_num, left=df.start_num, color=df.color)
+    ax.barh(df.task, df.days_between, left=df.start_num, alpha=0.5, color=df.color)
 
     # texts
     for idx, row in df.iterrows():
